@@ -9,7 +9,10 @@ import { connectMongo } from './infrastructure/database/mongo/connection.js';
 import { connectMysql } from './infrastructure/database/mysql/connection.js';
  
 await connectMongo();
-await connectMysql();
+const mysqlConnected = await connectMysql();
+if (!mysqlConnected) {
+    console.warn("MySQL no disponible: la API inicia solo con MongoDB.");
+}
  
 const app = express();
  

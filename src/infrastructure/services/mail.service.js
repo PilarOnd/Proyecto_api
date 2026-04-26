@@ -2,20 +2,26 @@ import nodemailer from "nodemailer";
 
 export default class MailService {
     constructor() {
+        const host = process.env.MAIL_HOST || process.env.EMAIL_HOST;
+        const port = parseInt(process.env.MAIL_PORT || process.env.EMAIL_PORT || "587", 10);
+        const secure = (process.env.MAIL_SECURE || process.env.EMAIL_SECURE || "false") === "true";
+        const user = process.env.MAIL_USER || process.env.EMAIL_USER;
+        const pass = process.env.MAIL_PASS || process.env.EMAIL_PASS;
+
         this.transporter = nodemailer.createTransport({
-            host: process.env.MAIL_HOST,
-            port: parseInt(process.env.MAIL_PORT, 10),
-            secure: process.env.MAIL_SECURE === "true",
+            host,
+            port,
+            secure,
             auth: {
-                user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS
+                user,
+                pass
             }
         });
     }
 
     async sendNoteEmail(to, note) {
         const mailOptions = {
-            from: process.env.MAIL_FROM,
+            from: process.env.MAIL_FROM || process.env.EMAIL_USER,
             to,
             subject: `Te han compartido una nota: ${note.title}`,
             html: `
