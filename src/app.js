@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';    
-import 'express-async-errors';
 import morgan from 'morgan';
 import { loggerMiddleware } from './presentation/middlewares/logger.middleware.js';
 import noteRoutes from './presentation/routes/note.routes.js';
