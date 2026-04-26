@@ -1,3 +1,4 @@
+
 export default class NoteEntity {
     constructor ({ id, title, content, imageUrl, isPrivate, password,userid}) {
         this.id = id;
