@@ -31,20 +31,24 @@ export default class NoteController {
         if (req.file) data.imageUrl = '/uploads/' + req.file.filename;
         
         try {
-            const note = await this.noteService.updateNote(id, data);
+            const note = await this.noteService.updateNote(id, data, req.user);
             res.status(200).json(note);
         } catch (error) {
-            res.status(404).json({ error: error.message });
+            if (error.message === "Forbidden") return res.status(403).json({ error: error.message });
+            if (error.message === "Note not found") return res.status(404).json({ error: error.message });
+            res.status(400).json({ error: error.message });
         }
     }
 
     deleteNote = async (req, res) => {
         const { id } = req.params;
         try {
-            const result = await this.noteService.deleteNote(id);
+            const result = await this.noteService.deleteNote(id, req.user);
             res.status(200).json(result);
         } catch (error) {
-            res.status(404).json({ error: error.message });
+            if (error.message === "Forbidden") return res.status(403).json({ error: error.message });
+            if (error.message === "Note not found") return res.status(404).json({ error: error.message });
+            res.status(400).json({ error: error.message });
         }
     }
 
