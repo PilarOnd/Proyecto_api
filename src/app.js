@@ -25,9 +25,14 @@ app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/notes', noteRoutes);
- 
+
+// Health: versión alineada con /api/v1 (REST: recurso de estado bajo el mismo prefijo de versión)
+app.get('/api/v1/health', (req, res) => {
+    res.status(200).json({ status: 'OK', message: 'API de notas activa' });
+});
+// Compatibilidad: clientes que ya usan la ruta sin versión
 app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'OK',message: 'API de notas activa' });
+    res.status(200).json({ status: 'OK', message: 'API de notas activa' });
 });
  
  
