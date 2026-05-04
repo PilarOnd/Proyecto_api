@@ -7,7 +7,7 @@ const noteSchema = new Schema({
     isPrivate: { type: Boolean, default: false },
     password: { type: String },
     userId: { type:String, required: true },
-    categoryId: { type:String, required: true } 
+    categoryId: { type:String, required: true } //campo para la categoria de la nota
 }, { timestamps: true });
 
 export default model('Note', noteSchema);
