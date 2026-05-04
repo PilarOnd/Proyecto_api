@@ -7,7 +7,6 @@ export default class NoteEntity {
         this.imageUrl = imageUrl || null;
         this.isPrivate = isPrivate || false;
         this.password = password || null;
-        // Backward-compatible mapping in case old payloads still send "userid".
         this.userId = userId || userid;
         this.categoryId = categoryId;
     }
