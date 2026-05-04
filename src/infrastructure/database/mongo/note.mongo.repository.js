@@ -9,7 +9,7 @@ export default class NoteMongoRepository {
             isPrivate: noteEntity.isPrivate,
             password: noteEntity.password,
             userId: noteEntity.userId,
-            categoryId: noteEntity.categoryId  //nuevo campo para la categoria de la nota
+            categoryId: noteEntity.categoryId  //campo para la categoria de la nota  
         });
         const savedNote = await note.save();
         return savedNote.toObject();
