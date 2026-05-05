@@ -6,11 +6,15 @@ export default class NoteController {
     createNote = async (req, res) => {
         const data = req.body;
         if (req.file) data.imageUrl = '/uploads/' + req.file.filename;
-        data.userId = req.user.id; 
+        data.userId = req.user.id;
         try {
             const note = await this.noteService.createNote(data);
             res.status(201).json(note); // 201 Created
         } catch (error) {
+            if (error.message === "Category not found") return res.status(404).json({ error: error.message });
+            if (error.message === "Category does not belong to this user") {
+                return res.status(403).json({ error: error.message });
+            }
             res.status(400).json({ error: error.message });
         }
     }
@@ -36,6 +40,10 @@ export default class NoteController {
         } catch (error) {
             if (error.message === "Forbidden") return res.status(403).json({ error: error.message });
             if (error.message === "Note not found") return res.status(404).json({ error: error.message });
+            if (error.message === "Category not found") return res.status(404).json({ error: error.message });
+            if (error.message === "Category does not belong to this user") {
+                return res.status(403).json({ error: error.message });
+            }
             res.status(400).json({ error: error.message });
         }
     }

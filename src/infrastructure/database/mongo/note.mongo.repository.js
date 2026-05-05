@@ -34,4 +34,8 @@ export default class NoteMongoRepository {
         const note = await NoteModel.findByIdAndDelete(id);
         return note ? true : null;
     }
+
+    async countByCategoryId(categoryId) {
+        return NoteModel.countDocuments({ categoryId: String(categoryId) });
+    }
 }

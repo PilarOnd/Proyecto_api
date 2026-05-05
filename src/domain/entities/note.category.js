@@ -1,6 +1,7 @@
 export default class NoteCategoryEntity {
-    constructor({ id, name}) {
+    constructor({ id, name, userId }) {
         this.id = id;
         this.name = name;
+        this.userId = userId;
     }
 }

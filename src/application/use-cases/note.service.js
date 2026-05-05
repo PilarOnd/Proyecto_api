@@ -2,14 +2,25 @@
 import NoteEntity from "../../domain/entities/note.entity.js";
 
 export default class NoteService {
-    constructor(noteRepository, mailService) {
+    constructor(noteRepository, mailService, categoryRepository) {
         this.noteRepository = noteRepository;
         this.mailService = mailService;
+        this.categoryRepository = categoryRepository;
+    }
+
+    async assertCategoryBelongsToUser(categoryId, userId) {
+        const category = await this.categoryRepository.findById(categoryId);
+        if (!category) throw new Error("Category not found");
+        if (String(category.userId) !== String(userId)) {
+            throw new Error("Category does not belong to this user");
+        }
     }
 
     async createNote(data) {
         if (!data.title || !data.content) { throw new Error("Title and content are required"); }
-        if (!data.categoryId) { throw new Error("Category is required"); }  //categoryId es requerido para crear una nota
+        if (!data.categoryId) { throw new Error("Category is required"); }
+
+        await this.assertCategoryBelongsToUser(data.categoryId, data.userId);
 
         const note = new NoteEntity(data);
         return await this.noteRepository.save(note);
@@ -29,6 +40,10 @@ export default class NoteService {
         const note = await this.noteRepository.findById(id);
         if (!note) throw new Error("Note not found");
         if (!this.canManageNote(note, currentUser)) throw new Error("Forbidden");
+
+        if (data.categoryId !== undefined && data.categoryId !== null && data.categoryId !== "") {
+            await this.assertCategoryBelongsToUser(data.categoryId, currentUser.id);
+        }
 
         const updatedNote = await this.noteRepository.update(id, data);
         return updatedNote;

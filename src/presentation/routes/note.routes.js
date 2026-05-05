@@ -6,12 +6,14 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 // Importamos el repositorio de Mongo y el servicio de Mail
 import NoteMongoRepository from "../../infrastructure/database/mongo/note.mongo.repository.js";
+import CategoryMongoRepository from "../../infrastructure/database/mongo/category.mongo.repository.js";
 import MailService from "../../infrastructure/services/mail.service.js";
 
 // inyeccion de dependencias
 const mailService = new MailService();
 const noteRepository = new NoteMongoRepository();
-const noteService = new NoteService(noteRepository, mailService);
+const categoryRepository = new CategoryMongoRepository();
+const noteService = new NoteService(noteRepository, mailService, categoryRepository);
 const noteController = new NoteController(noteService);
 
 const router = Router();
