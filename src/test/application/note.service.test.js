@@ -15,8 +15,8 @@ describe('NoteService - Pruebas Unitarias', () => {
     });
 
     test('Crear: debería crear y guardar una nota correctamente', async () => {
-        const data = { title: 'Mi nota', content: 'Info', userId: 'user_123', categoryId: 'cat_1' };
-        mockNoteRepository.save.mockResolvedValue({ id: 1, ...data });
+        const data = { title: 'Mi nota', content: 'Info', userId: 'user_123', categoryId: 'cat_1' }; //categoryId es requerido para crear una nota
+        mockNoteRepository.save.mockResolvedValue({ id: 1, ...data }); 
 
         const result = await noteService.createNote(data);
 
